@@ -1,21 +1,17 @@
-// conexion con el socket
-const socket = io('ws://localhost:8080');
+// conectarse con el back
+const socket = io('ws://localhost:3000');
+const list = document.getElementById("notificationList")
 
-// listener en el cliente cuando se envie una notificacion
-socket.on('notification', message => {
-    // div para ver la notificacion
-    const el = document.createElement('div');
-    // lo que esta dentro es el mensaje
-    el.textContent = message;
-    // lo agregamos al html para que aparezca en interfaz
-    document.body.appendChild(el)
-});
 
-// send the message - client
-// listening
-document.querySelector('button').onclick = () => {
-    // tomar el texto con su valor
-    const message = document.querySelector('#notificationInput').value;
-    // emit el evento y el mnesje
-    socket.emit('notification', message)
-}
+// ver conexion exitosa
+socket.on("connect", () => {
+    console.log(socket.id)
+})
+
+// recibimos el mensaje del back y lo mostramos
+socket.on("notification", (message) => {
+    const notification = document.createElement("li")
+    notification.innerText = message
+    list.appendChild(notification)
+})
+
